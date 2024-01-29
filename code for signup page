@@ -1,0 +1,32 @@
+Creating a simple signup page in Python typically involves using a web framework. Flask is a lightweight web framework that's commonly used for such tasks. Below is a minimal example of a signup page using Flask. Please note that this is a basic example, and in a production environment, you would need to consider security aspects, form validation, and database integration.
+
+First, you need to install Flask. You can do this using the following command:
+pip install flask
+Now, you can create a simple Flask application for a signup page:
+from flask import Flask, render_template, request, redirect, url_for
+
+app = Flask(__name__)
+
+# In-memory user database (in a real-world application, you'd use a database)
+users = []
+
+@app.route('/')
+def index():
+    return render_template('signup.html')
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    username = request.form['username']
+    password = request.form['password']
+
+    # In a real-world application, you would hash the password and store it securely
+    users.append({'username': username, 'password': password})
+
+    return redirect(url_for('success', username=username))
+
+@app.route('/success/<username>')
+def success(username):
+    return f'Success! Welcome, {username}!'
+
+if __name__ == '__main__':
+    app.run(debug=True)
